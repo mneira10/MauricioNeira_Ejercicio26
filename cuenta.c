@@ -1,13 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
-
+#include <chrono>
 using namespace std;
 
 main(int argc, char const *argv[])
 {
 
-  const clock_t begin_time = clock();
+  auto t1 = chrono::high_resolution_clock::now();
 
   if (argc < 4)
   {
@@ -64,9 +64,11 @@ main(int argc, char const *argv[])
   }
 
   ofstream timeFile;
-  timeFile.open (argv[3]);
+  timeFile.open (argv[3],ios_base::app);
   // time in seconds
-  timeFile << float( clock () - begin_time ) /  CLOCKS_PER_SEC;
+  auto t2 = chrono::high_resolution_clock::now();
+  chrono::duration<int64_t,nano> elapsed = t2 - t1;
+  timeFile << elapsed.count()  <<endl;
   timeFile.close();
   return 0;
 }
